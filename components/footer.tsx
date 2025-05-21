@@ -21,7 +21,7 @@ export function Footer() {
 
         <div className="flex items-center gap-4">
           <Link
-            href="https://instagram.com/jayakanthkamisetti"
+            href="https://instagram.com/jaikanthh"
             target="_blank"
             rel="noopener noreferrer"
             className="text-slate-700 dark:text-slate-300 hover:text-rose-500 dark:hover:text-rose-400 transition-colors"
@@ -30,7 +30,7 @@ export function Footer() {
             <Instagram className="h-5 w-5" />
           </Link>
           <Link
-            href="https://linkedin.com/in/jayakanthkamisetti"
+            href="https://linkedin.com/in/jaikanthh"
             target="_blank"
             rel="noopener noreferrer"
             className="text-slate-700 dark:text-slate-300 hover:text-rose-500 dark:hover:text-rose-400 transition-colors"
@@ -39,7 +39,7 @@ export function Footer() {
             <Linkedin className="h-5 w-5" />
           </Link>
           <Link
-            href="https://github.com/jayakanthkamisetti"
+            href="https://github.com/jaikanthh"
             target="_blank"
             rel="noopener noreferrer"
             className="text-slate-700 dark:text-slate-300 hover:text-rose-500 dark:hover:text-rose-400 transition-colors"
@@ -48,7 +48,7 @@ export function Footer() {
             <Github className="h-5 w-5" />
           </Link>
           <Link
-            href="mailto:contact@jayakanthkamisetti.com"
+            href="mailto:jaikanthkamisetti@gmail.com"
             className="text-slate-700 dark:text-slate-300 hover:text-rose-500 dark:hover:text-rose-400 transition-colors"
             aria-label="Email"
           >
