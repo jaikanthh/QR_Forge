@@ -61,9 +61,17 @@ export default function QRCodeGenerator() {
     const img = new Image()
     img.crossOrigin = "anonymous"
     img.onload = () => {
-      canvas.width = size
-      canvas.height = size
-      ctx?.drawImage(img, 0, 0)
+      // Add padding for border
+      const padding = 20
+      canvas.width = size + (padding * 2)
+      canvas.height = size + (padding * 2)
+
+      // Fill background
+      ctx!.fillStyle = bgColor
+      ctx!.fillRect(0, 0, canvas.width, canvas.height)
+
+      // Draw QR code
+      ctx!.drawImage(img, padding, padding, size, size)
 
       // Draw logo if exists
       if (logoImage) {
@@ -72,8 +80,8 @@ export default function QRCodeGenerator() {
         logoImg.onload = () => {
           const logoWidth = size * (logoSize / 100)
           const logoHeight = logoWidth
-          const logoX = (size - logoWidth) / 2
-          const logoY = (size - logoHeight) / 2
+          const logoX = padding + (size - logoWidth) / 2
+          const logoY = padding + (size - logoHeight) / 2
 
           // Draw white background for logo
           ctx!.fillStyle = "#ffffff"
@@ -114,7 +122,7 @@ export default function QRCodeGenerator() {
                 <ArrowLeft className="h-5 w-5" />
               </Button>
             </Link>
-            <h1 className="text-3xl font-bold text-slate-800 dark:text-white">QR Code Generator</h1>
+            <h1 className="text-3xl font-bold text-slate-800 dark:text-white">QR Forge Generator</h1>
           </div>
           <Button
             variant="outline"
@@ -129,10 +137,9 @@ export default function QRCodeGenerator() {
         <div className="grid md:grid-cols-2 gap-8 items-start">
           <div className="bg-white/90 dark:bg-slate-950/90 backdrop-blur-sm p-6 rounded-2xl shadow-xl">
             <Tabs defaultValue="content" className="w-full">
-              <TabsList className="grid grid-cols-3 mb-4">
+              <TabsList className="grid grid-cols-2 mb-4">
                 <TabsTrigger value="content">Content</TabsTrigger>
                 <TabsTrigger value="style">Style</TabsTrigger>
-                <TabsTrigger value="logo">Logo</TabsTrigger>
               </TabsList>
 
               <TabsContent value="content" className="space-y-4">
@@ -193,47 +200,6 @@ export default function QRCodeGenerator() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label>QR Style</Label>
-                  <RadioGroup value={qrStyle} onValueChange={setQrStyle} className="grid grid-cols-3 gap-2">
-                    <div className="flex items-center space-x-2 border rounded-md p-2">
-                      <RadioGroupItem value="squares" id="squares" />
-                      <Label htmlFor="squares" className="cursor-pointer">
-                        Squares
-                      </Label>
-                    </div>
-                    <div className="flex items-center space-x-2 border rounded-md p-2">
-                      <RadioGroupItem value="dots" id="dots" />
-                      <Label htmlFor="dots" className="cursor-pointer">
-                        Dots
-                      </Label>
-                    </div>
-                    <div className="flex items-center space-x-2 border rounded-md p-2">
-                      <RadioGroupItem value="classy" id="classy" />
-                      <Label htmlFor="classy" className="cursor-pointer">
-                        Classy
-                      </Label>
-                    </div>
-                  </RadioGroup>
-                </div>
-
-                <div className="space-y-2">
-                  <Label>Corner Style</Label>
-                  <Select value={cornerStyle} onValueChange={setCornerStyle}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select corner style" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="square">Square</SelectItem>
-                      <SelectItem value="rounded">Rounded</SelectItem>
-                      <SelectItem value="extra-rounded">Extra Rounded</SelectItem>
-                      <SelectItem value="dot">Dot</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </TabsContent>
-
-              <TabsContent value="logo" className="space-y-4">
-                <div className="space-y-2">
                   <Label>Upload Logo (Optional)</Label>
                   <div className="flex flex-col gap-4">
                     <div className="flex items-center gap-2">
@@ -271,6 +237,7 @@ export default function QRCodeGenerator() {
                   </div>
                 </div>
               </TabsContent>
+
             </Tabs>
 
             <div className="pt-4 mt-4 border-t">
@@ -285,30 +252,19 @@ export default function QRCodeGenerator() {
               <QRCodeSVG
                 id="qr-code"
                 value={text || " "}
-                size={size}
+                size={200}
                 fgColor={qrColor}
                 bgColor={bgColor}
                 level="H"
                 includeMargin={false}
-                imageSettings={
-                  logoImage
-                    ? {
-                        src: logoImage,
-                        excavate: true,
-                        height: size * (logoSize / 100),
-                        width: size * (logoSize / 100),
-                      }
-                    : undefined
-                }
-                // These props will be used based on the selected style
-                // Note: qrcode.react doesn't directly support all these styles
-                // In a real implementation, you might need a custom QR code library
-                // or modify the SVG after generation
+                imageSettings={logoImage ? {
+                  src: logoImage,
+                  excavate: true,
+                  height: 200 * (logoSize / 100),
+                  width: 200 * (logoSize / 100),
+                } : undefined}
                 {...(qrStyle === "dots"
-                  ? {
-                      // This is a placeholder - in a real app you'd need custom rendering
-                      className: "rounded-full",
-                    }
+                  ? { className: "rounded-full" }
                   : {})}
               />
             </div>

@@ -57,8 +57,35 @@ export default function QRCodeScanner() {
         // Get image data for QR code scanning
         const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height)
 
-        // Scan for QR code
-        const code = jsQR(imageData.data, imageData.width, imageData.height)
+        // Try to scan with different scales for better detection
+        const scales = [1, 0.8, 0.6, 0.4]
+        let code = null
+
+        for (const scale of scales) {
+          const scaledWidth = Math.floor(canvas.width * scale)
+          const scaledHeight = Math.floor(canvas.height * scale)
+          
+          // Create a temporary canvas for scaling
+          const tempCanvas = document.createElement('canvas')
+          const tempCtx = tempCanvas.getContext('2d')
+          if (!tempCtx) continue
+          
+          tempCanvas.width = scaledWidth
+          tempCanvas.height = scaledHeight
+          
+          // Draw scaled image
+          tempCtx.drawImage(canvas, 0, 0, scaledWidth, scaledHeight)
+          
+          // Get scaled image data
+          const scaledImageData = tempCtx.getImageData(0, 0, scaledWidth, scaledHeight)
+          
+          // Try to scan QR code
+          code = jsQR(scaledImageData.data, scaledImageData.width, scaledImageData.height, {
+            inversionAttempts: "dontInvert",
+          })
+          
+          if (code) break
+        }
 
         if (code) {
           setScannedResult(code.data)
@@ -70,7 +97,7 @@ export default function QRCodeScanner() {
             setIsUrl(false)
           }
         } else {
-          setError("No QR code found in the image. Try another image or ensure the QR code is clearly visible.")
+          setError("No QR code found in the image. Please ensure the QR code is clear, well-lit, and not blurry.")
         }
 
         setIsLoading(false)
@@ -124,7 +151,7 @@ export default function QRCodeScanner() {
                 <ArrowLeft className="h-5 w-5" />
               </Button>
             </Link>
-            <h1 className="text-3xl font-bold text-slate-800 dark:text-white">QR Code Scanner</h1>
+            <h1 className="text-3xl font-bold text-slate-800 dark:text-white">QR Forge Scanner</h1>
           </div>
           <Button
             variant="outline"

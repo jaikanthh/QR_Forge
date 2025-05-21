@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { ArrowRight, Sparkles, QrCode, ImageIcon } from "lucide-react"
+import { ArrowRight, QrCode, ImageIcon } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { motion } from "framer-motion"
 import Link from "next/link"
@@ -37,14 +37,18 @@ export default function LandingPage() {
             QR <span className="text-rose-500 dark:text-rose-400">Forge</span>
           </motion.h1>
 
-          <motion.p
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="text-xl md:text-2xl text-slate-600 dark:text-slate-300 max-w-2xl mb-12"
+            className="text-xl md:text-2xl text-slate-600 dark:text-slate-300 max-w-2xl mb-8"
           >
-            Create stunning, customizable QR codes.
-          </motion.p>
+            <p className="mb-4">
+              Create stunning, customizable QR codes with advanced styling options, logo embedding, and QR code scanning
+              capabilities.
+            </p>
+
+          </motion.div>
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
